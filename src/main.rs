@@ -41,6 +41,6 @@ async fn main() -> Result<()> {
         .await
         .expect("Error creating client");
 
-    println!("Starting client...")
+    println!("Starting client...");
     client.start().await
 }
