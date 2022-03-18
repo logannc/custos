@@ -10,18 +10,21 @@ use serenity::Result;
 #[command]
 async fn init(ctx: &Context, msg: &Message) -> CommandResult {
     dbg!(msg);
+    msg.reply(ctx, "recieved init").await?;
     Ok(())
 }
 
 #[command]
 async fn scene(ctx: &Context, msg: &Message) -> CommandResult {
     dbg!(msg);
+    msg.reply(ctx, "recieved scene").await?;
     Ok(())
 }
 
 #[command]
 async fn beat(ctx: &Context, msg: &Message) -> CommandResult {
     dbg!(msg);
+    msg.reply(ctx, "recieved beat").await?;
     Ok(())
 }
 
