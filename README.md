@@ -1,5 +1,5 @@
 # custos
- Custodian (Custos) of record keeping for Mage Marchest West
+ Custodian (Custos) of record keeping for Mage Marches West
 
 
 ### Getting a Development Environment Set Up
