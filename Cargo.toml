@@ -2,7 +2,18 @@
 name = "custos"
 version = "0.1.0"
 edition = "2021"
+default-run = "bot"
 
 [dependencies]
 tokio = { version = "1.14.0", features = ["full"] }
 serenity = "0.10"
+sqlx = { version = "0.5", features = [ "runtime-tokio-native-tls", "sqlite" ] }
+evolve_derive = { version = "*", path = "../evolve_derive" }
+
+[[bin]]
+name = "bot"
+path = "src/bin/bot.rs"
+
+[[bin]]
+name = "evolve_db"
+path = "src/bin/evolve_db.rs"
