@@ -2,7 +2,18 @@
 name = "custos"
 version = "0.1.0"
 edition = "2021"
+default-run = "bot"
 
 [dependencies]
 tokio = { version = "1.14.0", features = ["full"] }
-serenity = "0.10"
+serenity = "0.11.2"
+diesel =         { version = "1.4.8", default-features = false, features = ["sqlite"] }
+dotenv = "0.15.0"
+
+[[bin]]
+name = "bot"
+path = "src/bin/bot.rs"
+
+[[bin]]
+name = "diesel_run"
+path = "src/bin/diesel_run.rs"
