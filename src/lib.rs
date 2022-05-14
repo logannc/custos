@@ -1,6 +1,3 @@
-use evolve_derive::list_evolves;
-
-
+#[macro_use] extern crate diesel;
 pub mod models;
-
-list_evolves!();
+pub mod schema;
