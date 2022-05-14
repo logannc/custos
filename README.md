@@ -23,5 +23,6 @@ DISCORD_TOKEN = "<your token here>"
     * Replacing the placholder with your copied value, go to `https://discord.com/api/oauth2/authorize?client_id=<application_id>&permissions=8&scope=bot`
         * This will allow you to invite the bot to your test server (or any server you have permission for).
         * We are being lazy and requesting `Administrator` permissions.
-9. `cargo run` should compile and run the application with your `DISCORD_TOKEN` set in the environment.
-10. If all went well, you should see `Starting client...`. This means the bot is running! Test out the bot!
+9. `cargo run --bin bot` should compile and run the application with your `DISCORD_TOKEN` set in the environment.
+    * You can run `cargo run --bin diesel_run` to just test some DB stuff.
+11. If all went well, you should see `Starting client...`. This means the bot is running! Test out the bot!
