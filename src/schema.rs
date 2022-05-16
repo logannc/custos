@@ -42,7 +42,6 @@ table! {
     }
 }
 
-
 // create table initiative_members (id integer primary key autoincrement not null, initiative_id integer not null, name text not null, value integer not null, tiebreaker real not null default 0.0, deleted_at timestamp);
 table! {
     initiative_members {

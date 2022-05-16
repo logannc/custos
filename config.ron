@@ -1,0 +1,7 @@
+(
+    enabled_categories:
+        [
+            // ChannelId for Los Angeles, USA (Stories)
+            ("782789175941529612"),
+        ],
+)
