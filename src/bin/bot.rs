@@ -1,89 +1,63 @@
-use serenity::client::{Client, Context};
+#![feature(once_cell)]
+
+use serenity::client::Context;
 use serenity::framework::standard::{
-    help_commands,
-    macros::{command, group, help},
-    Args, CommandGroup, CommandResult, HelpOptions, StandardFramework,
+    macros::{command, group},
+    CommandResult,
 };
 use serenity::model::channel::Message;
-use serenity::model::prelude::UserId;
 use serenity::Result;
-use std::collections::HashSet;
-use std::env;
+use std::lazy::SyncLazy;
+use tracing::info;
+
+static CONFIGURATION: SyncLazy<custos::config::Configuration> =
+    SyncLazy::new(|| custos::config::load_config());
+
+static DB_POOL: SyncLazy<custos::db::DbPool> = SyncLazy::new(|| custos::db::create_pool());
 
 #[group]
-#[commands(init, scene, beat)]
+#[commands(beat, init, scene, debug_info)]
 struct General;
+
+#[command]
+#[allowed_roles(Player)]
+async fn beat(ctx: &Context, msg: &Message) -> CommandResult {
+    custos::beat::beat_command_group(ctx, msg, &CONFIGURATION, &DB_POOL)
+}
 
 #[command]
 #[allowed_roles(Storyteller)]
 async fn init(ctx: &Context, msg: &Message) -> CommandResult {
-    dbg!(msg);
-    Ok(())
+    custos::init::initiative_command_group(ctx, msg, &CONFIGURATION, &DB_POOL)
 }
 
 #[command]
 #[allowed_roles(Storyteller)]
 async fn scene(ctx: &Context, msg: &Message) -> CommandResult {
-    dbg!(msg);
-    Ok(())
+    custos::scene::scene_command_group(ctx, msg, &CONFIGURATION, &DB_POOL)
 }
 
 #[command]
-#[allowed_roles(Player)]
-#[sub_commands(list)]
-async fn beat(ctx: &Context, msg: &Message) -> CommandResult {
-    dbg!(msg);
-    Ok(())
+#[allowed_roles(Archmage)]
+async fn debug_info(ctx: &Context, msg: &Message) -> CommandResult {
+    custos::debug::debug_info(ctx, msg, &CONFIGURATION, &DB_POOL).await
 }
 
-#[command]
-#[allowed_roles(Player)]
-async fn list(ctx: &Context, msg: &Message) -> CommandResult {
-    dbg!(msg);
-    Ok(())
-}
-
-#[help]
-async fn my_help(
-    context: &Context,
-    msg: &Message,
-    args: Args,
-    help_options: &'static HelpOptions,
-    groups: &[&'static CommandGroup],
-    owners: HashSet<UserId>,
-) -> CommandResult {
-    let _ = help_commands::with_embeds(context, msg, args, help_options, groups, owners).await;
-    // https://docs.rs/serenity/latest/serenity/framework/standard/help_commands/fn.searched_lowercase.html
-    // let _ = dbg!(help_commands::create_customised_help_data(context, msg, &args, groups, &owners, help_options).await);
-    Ok(())
+#[tracing::instrument]
+fn force_lazies() {
+    info!("Loading config...");
+    SyncLazy::force(&CONFIGURATION);
+    info!("Loading database connection...");
+    SyncLazy::force(&DB_POOL);
 }
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    let framework = StandardFramework::new()
-        .configure(|c| c.prefix("!"))
-        .group(&GENERAL_GROUP)
-        .help(&MY_HELP);
-
-    let token = env::var("DISCORD_TOKEN").expect("DISCORD_TOKEN env not set");
-    let mut client = Client::builder(token)
-        .framework(framework)
-        .await
-        .expect("Error creating client");
-
-    println!("Creating/Opening DB Pool...");
-    use sqlx::sqlite::SqliteConnectOptions;
-    use std::str::FromStr;
-    // let pool = SqlitePool::connect(db_path).await.unwrap();
-    // let conn = SqliteConnectOptions::from_str("sqlite://data.db")
-    //     .unwrap()
-    //     // .journal_mode(SqliteJournalMode::Wal)
-    //     .create_if_missing(true)
-    //     .connect()
-    //     .await
-    //     .unwrap();
-    let connection_options = SqliteConnectOptions::from_str("sqlite://data.db").unwrap().create_if_missing(true);
-    let pool = sqlx::sqlite::SqlitePool::connect_with(connection_options).await.unwrap();
-    println!("Starting client...");
+    // Start tracing first
+    let _log_flush_guard = custos::tracing::init_tracing();
+    // Force configuration and lazy loading so we error now instead of later.
+    force_lazies();
+    let mut client = custos::client::build_serenity_client(&GENERAL_GROUP).await;
+    info!("Starting Serenity client...");
     client.start().await
 }
