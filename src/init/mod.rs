@@ -4,11 +4,12 @@ use serenity::client::Context;
 use serenity::framework::standard::CommandResult;
 use serenity::model::channel::Message;
 
-pub fn initiative_command_group(
+pub async fn initiative_command_group(
     ctx: &Context,
     msg: &Message,
     config: &Configuration,
     db: &DbPool,
 ) -> CommandResult {
+    msg.reply(ctx, "DEBUG: Init command recieved").await?;
     Ok(())
 }
