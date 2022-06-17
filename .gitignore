@@ -19,3 +19,6 @@ Cargo.lock
 
 # ignore cargo conf
 .cargo/
+
+# don't commit logs
+/logs
