@@ -10,6 +10,6 @@ pub async fn scene_command_group(
     config: &Configuration,
     db: &DbPool,
 ) -> CommandResult {
-    msg.reply(ctx, "DEBUG: Scene command recieved").await?;
+    println!("DEBUG: Scene command recieved");
     Ok(())
 }

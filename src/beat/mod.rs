@@ -10,6 +10,6 @@ pub async fn beat_command_group(
     config: &Configuration,
     db: &DbPool,
 ) -> CommandResult {
-    msg.reply(ctx, "DEBUG: Beat command recieved").await?;
+    println!("DEBUG: Beat command recieved");
     Ok(())
 }

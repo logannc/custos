@@ -10,6 +10,6 @@ pub async fn initiative_command_group(
     config: &Configuration,
     db: &DbPool,
 ) -> CommandResult {
-    msg.reply(ctx, "DEBUG: Init command recieved").await?;
+    println!("DEBUG: Init command recieved");
     Ok(())
 }
