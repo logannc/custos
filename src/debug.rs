@@ -76,7 +76,7 @@ pub async fn debug_info(
     config: &Configuration,
     db: &DbPool,
 ) -> CommandResult {
-    println!("DEBUG: Debug command recieved");
+    debug!("Debug command recieved");
     if let Ok(command) = parse_command(msg) {
         match command {
             DebugCommand::PrintChannel => print_channel(ctx, msg).await,
