@@ -1,0 +1,7 @@
+-- Your SQL goes here
+CREATE TABLE beats (
+    id INTEGER NOT NULL PRIMARY KEY,
+    quantity INTEGER NOT NULL DEFAULT 1,
+    is_arcane BOOLEAN NOT NULL DEFAULT 0,
+    player VARCHAR NOT NULL
+)
