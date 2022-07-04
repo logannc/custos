@@ -22,3 +22,6 @@ Cargo.lock
 
 # don't commit logs
 /logs
+
+
+custos.db

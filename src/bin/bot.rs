@@ -22,19 +22,19 @@ struct General;
 #[command]
 #[allowed_roles(Player)]
 async fn beat(ctx: &Context, msg: &Message) -> CommandResult {
-    custos::beat::beat_command_group(ctx, msg, &CONFIGURATION, &DB_POOL)
+    custos::beat::beat_command_group(ctx, msg, &CONFIGURATION, &DB_POOL).await
 }
 
 #[command]
 #[allowed_roles(Storyteller)]
 async fn init(ctx: &Context, msg: &Message) -> CommandResult {
-    custos::init::initiative_command_group(ctx, msg, &CONFIGURATION, &DB_POOL)
+    custos::init::initiative_command_group(ctx, msg, &CONFIGURATION, &DB_POOL).await
 }
 
 #[command]
 #[allowed_roles(Storyteller)]
 async fn scene(ctx: &Context, msg: &Message) -> CommandResult {
-    custos::scene::scene_command_group(ctx, msg, &CONFIGURATION, &DB_POOL)
+    custos::scene::scene_command_group(ctx, msg, &CONFIGURATION, &DB_POOL).await
 }
 
 #[command]
